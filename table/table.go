@@ -264,6 +264,12 @@ func (m *Model) SetRows(r []Row) {
 	m.UpdateViewport()
 }
 
+// SetColumns set a new columns state.
+func (m *Model) SetColumns(c []Column) {
+	m.cols = c
+	m.UpdateViewport()
+}
+
 // SetWidth sets the width of the viewport of the table.
 func (m *Model) SetWidth(w int) {
 	m.viewport.Width = w
