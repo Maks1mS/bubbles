@@ -466,10 +466,18 @@ func (m *Model) Reset() {
 }
 
 func (m *Model) ResetWithoutValue() {
+	m.ResetView()
+	m.ResetChanged()
+}
+
+func (m *Model) ResetView() {
 	m.col = 0
 	m.row = 0
 	m.viewport.GotoTop()
 	m.SetCursor(0)
+}
+
+func (m *Model) ResetChanged() {
 	m.isChanged = false
 }
 
