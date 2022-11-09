@@ -522,6 +522,7 @@ func (m *Model) handlePaste(v string) {
 	// Put it all back together
 	value := append(head, tail...)
 	m.SetValue(string(value))
+	m.isChanged = true
 
 	// Reset blink state if necessary and run overflow checks
 	m.SetCursor(m.col + len(paste))
@@ -531,6 +532,7 @@ func (m *Model) handlePaste(v string) {
 // not the cursor blink should be reset.
 func (m *Model) deleteBeforeCursor() {
 	m.value[m.row] = m.value[m.row][m.col:]
+	m.isChanged = true
 	m.SetCursor(0)
 }
 
@@ -598,6 +600,8 @@ func (m *Model) deleteWordLeft() {
 	} else {
 		m.value[m.row] = append(m.value[m.row][:m.col], m.value[m.row][oldCol:]...)
 	}
+
+	m.isChanged = true
 }
 
 // deleteWordRight deletes the word right to the cursor.
@@ -632,6 +636,7 @@ func (m *Model) deleteWordRight() {
 	}
 
 	m.SetCursor(oldCol)
+	m.isChanged = true
 }
 
 // characterRight moves the cursor one character to the right.
@@ -717,6 +722,7 @@ func (m *Model) uppercaseRight() {
 	m.doWordRight(func(_ int, i int) {
 		m.value[m.row][i] = unicode.ToUpper(m.value[m.row][i])
 	})
+	m.isChanged = true
 }
 
 // lowercaseRight changes the word to the right to lowercase.
@@ -724,6 +730,7 @@ func (m *Model) lowercaseRight() {
 	m.doWordRight(func(_ int, i int) {
 		m.value[m.row][i] = unicode.ToLower(m.value[m.row][i])
 	})
+	m.isChanged = true
 }
 
 // capitalizeRight changes the word to the right to title case.
@@ -733,6 +740,7 @@ func (m *Model) capitalizeRight() {
 			m.value[m.row][i] = unicode.ToTitle(m.value[m.row][i])
 		}
 	})
+	m.isChanged = true
 }
 
 // LineInfo returns the number of characters from the start of the
@@ -1177,6 +1185,8 @@ func (m *Model) mergeLineBelow(row int) {
 	if len(m.value) > 0 {
 		m.value = m.value[:len(m.value)-1]
 	}
+
+	m.isChanged = true
 }
 
 // mergeLineAbove merges the current line the cursor is on with the line above.
@@ -1200,6 +1210,8 @@ func (m *Model) mergeLineAbove(row int) {
 	if len(m.value) > 0 {
 		m.value = m.value[:len(m.value)-1]
 	}
+
+	m.isChanged = true
 }
 
 func (m *Model) splitLine(row, col int) {
@@ -1217,6 +1229,8 @@ func (m *Model) splitLine(row, col int) {
 
 	m.col = 0
 	m.row++
+
+	m.isChanged = true
 }
 
 // Paste is a command for pasting from the clipboard into the text input.
