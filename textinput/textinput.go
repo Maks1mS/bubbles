@@ -5,9 +5,9 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/Maks1mS/bubbles/cursor"
+	"github.com/Maks1mS/bubbles/key"
 	"github.com/atotto/clipboard"
-	"github.com/charmbracelet/bubbles/cursor"
-	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	rw "github.com/mattn/go-runewidth"

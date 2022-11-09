@@ -3,7 +3,7 @@ package help
 import (
 	"strings"
 
-	"github.com/charmbracelet/bubbles/key"
+	"github.com/Maks1mS/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

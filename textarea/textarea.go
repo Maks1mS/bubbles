@@ -5,10 +5,10 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/Maks1mS/bubbles/cursor"
+	"github.com/Maks1mS/bubbles/key"
+	"github.com/Maks1mS/bubbles/viewport"
 	"github.com/atotto/clipboard"
-	"github.com/charmbracelet/bubbles/cursor"
-	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	rw "github.com/mattn/go-runewidth"
