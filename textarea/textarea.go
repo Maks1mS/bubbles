@@ -212,6 +212,8 @@ type Model struct {
 	// viewport is the vertically-scrollable viewport of the multi-line text
 	// input.
 	viewport *viewport.Model
+
+	isChanged bool
 }
 
 // New creates a new model with default settings.
@@ -281,6 +283,12 @@ func (m *Model) SetValue(s string) {
 	m.InsertString(s)
 }
 
+func (m *Model) SetValueAndReset(s string) {
+	m.Reset()
+	m.InsertString(s)
+	m.ResetWithoutValue()
+}
+
 // InsertString inserts a string at the cursor position.
 func (m *Model) InsertString(s string) {
 	lines := strings.Split(s, "\n")
@@ -318,6 +326,10 @@ func (m Model) Value() string {
 	}
 
 	return strings.TrimSuffix(v.String(), "\n")
+}
+
+func (m Model) IsChanged() bool {
+	return m.isChanged
 }
 
 // Length returns the number of characters currently in the text input.
@@ -450,10 +462,15 @@ func (m *Model) Blur() {
 // Reset sets the input to its default state with no input.
 func (m *Model) Reset() {
 	m.value = make([][]rune, minHeight, maxHeight)
+	m.ResetWithoutValue()
+}
+
+func (m *Model) ResetWithoutValue() {
 	m.col = 0
 	m.row = 0
 	m.viewport.GotoTop()
 	m.SetCursor(0)
+	m.isChanged = false
 }
 
 // handle a clipboard paste event, if supported.
@@ -939,6 +956,8 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			if m.CharLimit > 0 && rw.StringWidth(m.Value()) >= m.CharLimit {
 				break
 			}
+
+			m.isChanged = true
 
 			m.col = min(m.col, len(m.value[m.row]))
 			m.value[m.row] = append(m.value[m.row][:m.col], append(msg.Runes, m.value[m.row][m.col:]...)...)
