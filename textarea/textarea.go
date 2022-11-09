@@ -541,6 +541,7 @@ func (m *Model) deleteBeforeCursor() {
 // the cursor so as not to reveal word breaks in the masked input.
 func (m *Model) deleteAfterCursor() {
 	m.value[m.row] = m.value[m.row][:m.col]
+	m.isChanged = true
 	m.SetCursor(len(m.value[m.row]))
 }
 
@@ -560,6 +561,7 @@ func (m *Model) transposeLeft() {
 	if m.col < len(m.value[m.row]) {
 		m.SetCursor(m.col + 1)
 	}
+	m.isChanged = true
 }
 
 // deleteWordLeft deletes the word left to the cursor. Returns whether or not
