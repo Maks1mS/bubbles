@@ -908,6 +908,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			}
 			if len(m.value[m.row]) > 0 {
 				m.value[m.row] = append(m.value[m.row][:max(0, m.col-1)], m.value[m.row][m.col:]...)
+				m.isChanged = true
 				if m.col > 0 {
 					m.SetCursor(m.col - 1)
 				}
@@ -915,6 +916,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 		case key.Matches(msg, m.KeyMap.DeleteCharacterForward):
 			if len(m.value[m.row]) > 0 && m.col < len(m.value[m.row]) {
 				m.value[m.row] = append(m.value[m.row][:m.col], m.value[m.row][m.col+1:]...)
+				m.isChanged = true
 			}
 			if m.col >= len(m.value[m.row]) {
 				m.mergeLineBelow(m.row)
@@ -975,10 +977,9 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 				break
 			}
 
-			m.isChanged = true
-
 			m.col = min(m.col, len(m.value[m.row]))
 			m.value[m.row] = append(m.value[m.row][:m.col], append(msg.Runes, m.value[m.row][m.col:]...)...)
+			m.isChanged = true
 			m.SetCursor(m.col + len(msg.Runes))
 		}
 
